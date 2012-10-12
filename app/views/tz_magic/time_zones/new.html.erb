@@ -1,0 +1,4 @@
+<script type="text/javascript">
+  $.post("<%= time_zone_path %>", {'timezone_name': jstz.determine().name()}, function(data) {
+    window.location.href = data.forward_to});
+</script>
