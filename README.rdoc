@@ -64,7 +64,7 @@ by including the TzMagic::BeforeFilter into your controller, you are adding a ch
 - this hits our timezone#create method, which sets the cookie and returns the original url the user was going to via a json block.
 - the javascript receives the json payload, extracts the original url, and redirects, with the timezone happily in the session.
 
-= the magic javscript code
+= the magic javascript code
 
 
 The javascript at the heart of this Rube Goldberg contraption is Copyright (c) 2012 Jon Nylander, project maintained at
