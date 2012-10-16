@@ -1,3 +1,75 @@
 = TzMagic
 
-This project rocks and uses MIT-LICENSE.
+= Description
+
+While every sysadmin worth his or her salt runs their server in the UTC timezone, it is occasionally useful, even necessary, to know the timezone that the end user's browser is set to.  Surprisingly, there isn't an easy way to do this - you'd think that the browser might supply that in a header, but no... getting it is an exercise in plumbing together raw pieces of the internet.  This gem gives that to your average rails app with a minimum of fuss.
+
+
+= How to use it
+
+Its a rails engine.  You install it via a gem, then include various bits.
+
+== add this to your Gemfile with:
+
+<tt>
+gem 'tz-magic'
+</tt>
+
+== then wire it up in your rails app:
+
+add this line to your config/routes.rb file:
+
+<tt>
+mount TzMagic::Engine => "/tz_magic"
+</tt>
+
+add this line to your helpers/application_helper.rb file:
+
+<tt>
+include TzMagic::ApplicationHelper
+</tt>
+
+add this line to your app/assets/javascripts/application.js file:
+
+<tt>
+require tz_magic/application
+</tt>
+
+add this line to the controller that you need to ensure the timezone exists for (application_controller.rb is an acceptable, if brute-force option):
+
+<tt>
+include TzMagic::BeforeFilter
+</tt>
+
+you now have a helper you can refer to in your controllers or views like:
+
+<tt>
+time_zone
+</tt>
+
+or
+
+<tt>
+<%= time_zone.name %>
+</tt>
+
+This is a full fleged TimeZone instance.
+
+= How it works
+
+by including the TzMagic::BeforeFilter into your controller, you are adding a check that the user's session contains a :timezone_name element.  If that element exists, all is fine.  If it doesn't exist:
+
+- we redirect the user to our /timezone/new view
+- this view runs some javascript that determines the user's timezone, then submits it via an ajax push to /timezone
+- this hits our timezone#create method, which sets the cookie and returns the original url the user was going to via a json block.
+- the javascript receives the json payload, extracts the original url, and redirects, with the timezone happily in the session.
+
+= the magic javscript code
+
+
+The javascript at the heart of this Rube Goldberg contraption is Copyright (c) 2012 Jon Nylander, project maintained at
+https://bitbucket.org/pellepim/jstimezonedetect
+
+= contributing
+
+The usual.  Fork, modify, test, pullup request.
