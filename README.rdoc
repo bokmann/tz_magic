@@ -12,7 +12,7 @@ Its a rails engine.  You install it via a gem, then include various bits.
 == add this to your Gemfile with:
 
 <tt>
-gem 'tz-magic'
+gem 'tz_magic'
 </tt>
 
 == then wire it up in your rails app:
